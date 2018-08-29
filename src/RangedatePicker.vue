@@ -75,7 +75,7 @@
 <style lang="css" scoped>
     .input-date {
         display: block;
-        border: 1px solid #ccc;
+        border: 1px solid #e8e8e8;
         padding: 11px;
         font-size: 14px;
         width: 230px;
