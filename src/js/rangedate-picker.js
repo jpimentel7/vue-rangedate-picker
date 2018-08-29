@@ -1,7 +1,7 @@
 import fecha from 'fecha'
 
 const defaultConfig = {}
-const defaultI18n = 'ID'
+const defaultI18n = 'EN'
 const availableMonths = {
   EN: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November',
     'December'],
@@ -359,10 +359,17 @@ export default {
       this.activeYearEnd = this.dateRange.end.getFullYear()
     },
     setDateValue: function () {
-      this.$emit('selected', this.dateRange)
+      this.$emit('selected', this.getDateRange())
       if (!this.isCompact) {
         this.toggleCalendar()
       }
+    },
+    getDateRange: function () {
+      const start = new Date(this.dateRange.start.getTime())
+      start.setDate(start.getDate() - 1)
+      const end = new Date(this.dateRange.end.getTime())
+      end.setDate(end.getDate() - 1)
+      return { start: start, end: end }
     }
   }
 }
