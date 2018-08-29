@@ -77,7 +77,8 @@
         display: block;
         border: 1px solid #e8e8e8;
         padding: 11px;
-        font-size: 14px;
+        font-size: 1em;
+        font-weight: 400;
         width: 230px;
         cursor: pointer;
         border-radius: 5px;
