@@ -1,21 +1,31 @@
 import Vue from 'vue'
 import RangedatePicker from '@/RangedatePicker.vue'
 
+const today = new Date()
+
 describe('RangedatePicker', () => {
   let vm
 
   beforeEach(() => {
-    vm = new (Vue.extend(RangedatePicker))({
+    const Constructor = Vue.extend(RangedatePicker)
+    vm = new Constructor({
       propsData: {
-        image: '/abc.jpg'
+        configs: {
+          dateRange: {
+            start: today,
+            end: today
+          }
+        }
       }
     })
     vm.$mount()
   })
 
-  describe('image', () => {
-    it('should be /abc.jpg', () => {
-      assert(vm.image === '/abc.jpg', 'You should be implemented!!')
+  describe('loads default dates', () => {
+    it('todays date should be selected', () => {
+      console.log('test is running')
+      assert(vm.dateRange.start === today, 'You should be equal!!')
+      assert(vm.dateRange.end === today, 'You should be equal!!')
     })
   })
 })

@@ -136,7 +136,7 @@ export default {
       type: Array,
       default: () => null
     },
-    // options for captions are: title, ok_button
+        // options for captions are: title, ok_button
     captions: {
       type: Object,
       default: () => defaultCaptions
@@ -147,7 +147,8 @@ export default {
     },
     styles: {
       type: Object,
-      default: () => {}
+      default: () => {
+      }
     },
     initRange: {
       type: Object,
@@ -191,7 +192,22 @@ export default {
     if (this.isCompact) {
       this.isOpen = true
     }
-    if (this.activeMonthStart === 11) this.activeYearEnd = this.activeYearStart + 1
+    if (this.activeMonthStart === 11) {
+      this.activeYearEnd = this.activeYearStart + 1
+    }
+    if (
+          this.configs &&
+          this.configs.dateRange &&
+          this.configs.dateRange.start &&
+          this.configs.dateRange.start instanceof Date &&
+          this.configs.dateRange.end &&
+          this.configs.dateRange.end instanceof Date
+      ) {
+      this.dateRange = {
+        start: this.configs.dateRange.start,
+        end: this.configs.dateRange.end
+      }
+    }
   },
   watch: {
     startNextActiveMonth: function (value) {
@@ -266,7 +282,7 @@ export default {
     },
     getDayCell (r, i, startMonthDay, endMonthDate) {
       const result = this.getDayIndexInMonth(r, i, startMonthDay)
-      // bound by > 0 and < last day of month
+            // bound by > 0 and < last day of month
       return result > 0 && result <= endMonthDate ? result : '&nbsp;'
     },
     getNewDateRange (result, activeMonth, activeYear) {
@@ -283,7 +299,7 @@ export default {
         return { start: resultDate }
       }
 
-      // toggle first choice
+            // toggle first choice
       this.isFirstChoice = !this.isFirstChoice
       newData[key] = resultDate
       return newData
@@ -291,7 +307,7 @@ export default {
     selectFirstItem (r, i) {
       const result = this.getDayIndexInMonth(r, i, this.startMonthDay) + 1
       this.dateRange = Object.assign({}, this.dateRange, this.getNewDateRange(result, this.activeMonthStart,
-      this.activeYearStart))
+                this.activeYearStart))
       if (this.dateRange.start && this.dateRange.end) {
         this.presetActive = ''
         if (this.isCompact) {
@@ -302,7 +318,7 @@ export default {
     selectSecondItem (r, i) {
       const result = this.getDayIndexInMonth(r, i, this.startNextMonthDay) + 1
       this.dateRange = Object.assign({}, this.dateRange, this.getNewDateRange(result, this.startNextActiveMonth,
-      this.activeYearEnd))
+                this.activeYearEnd))
       if (this.dateRange.start && this.dateRange.end) {
         this.presetActive = ''
       }
@@ -318,7 +334,7 @@ export default {
         currDate = new Date(this.activeYearEnd, this.startNextActiveMonth, result)
       }
       return (this.dateRange.start && this.dateRange.start.getTime() === currDate.getTime()) ||
-        (this.dateRange.end && this.dateRange.end.getTime() === currDate.getTime())
+                (this.dateRange.end && this.dateRange.end.getTime() === currDate.getTime())
     },
     isDateInRange (r, i, key, startMonthDay, endMonthDate) {
       const result = this.getDayIndexInMonth(r, i, startMonthDay) + 1
@@ -331,11 +347,11 @@ export default {
         currDate = new Date(this.activeYearEnd, this.startNextActiveMonth, result)
       }
       return (this.dateRange.start && this.dateRange.start.getTime() < currDate.getTime()) &&
-        (this.dateRange.end && this.dateRange.end.getTime() > currDate.getTime())
+                (this.dateRange.end && this.dateRange.end.getTime() > currDate.getTime())
     },
     isDateDisabled (r, i, startMonthDay, endMonthDate) {
       const result = this.getDayIndexInMonth(r, i, startMonthDay)
-      // bound by > 0 and < last day of month
+            // bound by > 0 and < last day of month
       return !(result > 0 && result <= endMonthDate)
     },
     goPrevMonth () {
@@ -353,7 +369,7 @@ export default {
     updatePreset (item) {
       this.presetActive = item.label
       this.dateRange = item.dateRange
-      // update start active month
+            // update start active month
       this.activeMonthStart = this.dateRange.start.getMonth()
       this.activeYearStart = this.dateRange.start.getFullYear()
       this.activeYearEnd = this.dateRange.end.getFullYear()
