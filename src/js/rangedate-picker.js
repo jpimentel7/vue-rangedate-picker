@@ -196,26 +196,32 @@ export default {
       this.activeYearEnd = this.activeYearStart + 1
     }
   },
-  mounted () {
-    if (
-            this.configs &&
-            this.configs.dateRange &&
-            this.configs.dateRange.start &&
-            this.configs.dateRange.start instanceof Date &&
-            this.configs.dateRange.end &&
-            this.configs.dateRange.end instanceof Date
-        ) {
-      this.dateRange = {
-        start: this.configs.dateRange.start,
-        end: this.configs.dateRange.end
-      }
-    } else {
-      console.log('Invalid date range config')
-    }
-  },
   watch: {
     startNextActiveMonth: function (value) {
       if (value === 0) this.activeYearEnd = this.activeYearStart + 1
+    },
+    configs: function (newConfig) {
+      if (
+                newConfig &&
+                newConfig.dateRange &&
+                newConfig.dateRange.start &&
+                newConfig.dateRange.start instanceof Date &&
+                newConfig.dateRange.end &&
+                newConfig.dateRange.end instanceof Date
+            ) {
+        const startDate = this.configs.dateRange.start
+        startDate.setDate(startDate.getDate() + 1)
+
+        const endDate = this.configs.dateRange.end
+        endDate.setDate(endDate.getDate() + 1)
+
+        this.dateRange = {
+          start: startDate,
+          end: endDate
+        }
+      } else {
+        console.log('Invalid date range config')
+      }
     }
   },
   computed: {

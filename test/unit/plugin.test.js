@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import RangedatePicker from '@/RangedatePicker.vue'
 
-const today = new Date()
+const startDate = new Date()
+const endDate = new Date()
+startDate.setMonth(startDate.getMonth() - 3)
 
 describe('RangedatePicker', () => {
   let vm
@@ -12,8 +14,8 @@ describe('RangedatePicker', () => {
       propsData: {
         configs: {
           dateRange: {
-            start: today,
-            end: today
+            start: startDate,
+            end: endDate
           }
         }
       }
@@ -24,8 +26,8 @@ describe('RangedatePicker', () => {
   describe('loads default dates', () => {
     it('todays date should be selected', () => {
       console.log('test is running')
-      assert(vm.dateRange.start === today, 'You should be equal!!')
-      assert(vm.dateRange.end === today, 'You should be equal!!')
+      assert(vm.dateRange.start === startDate, 'Start date should be equal.')
+      assert(vm.dateRange.end === endDate, 'End date should be equal.')
     })
   })
 })

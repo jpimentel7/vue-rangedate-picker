@@ -12,12 +12,24 @@
 
 import VueRangeDatePicker from './RangedatePicker.vue'
 
+const startDate = new Date()
+const endDate = new Date()
+startDate.setMonth(startDate.getMonth() - 3)
+
 new window.Vue({
   el: 'app',
+  data: {
+    configs: {
+      dateRange: {
+        start: startDate,
+        end: endDate
+      }
+    }
+  },
   template: `<div id="demo">
 <div>
 <strong>Full form</strong>
-<vue-rangedate-picker></vue-rangedate-picker>
+<vue-rangedate-picker :configs="configs"></vue-rangedate-picker>
 </div>
 <div style="height: 300px">
 <strong>Compact (mobile)</strong>
