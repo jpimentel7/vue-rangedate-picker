@@ -177,7 +177,10 @@ export default {
   },
   data () {
     return {
-      dateRange: {},
+      dateRange: {
+        start: null,
+        end: null
+      },
       numOfDays: 7,
       isFirstChoice: true,
       isOpen: false,
@@ -196,33 +199,16 @@ export default {
       this.activeYearEnd = this.activeYearStart + 1
     }
   },
+  mounted () {
+    if (this.configs) {
+      this.updateDateRangeFromConfig(this.configs)
+    }
+  },
   watch: {
     startNextActiveMonth: function (value) {
       if (value === 0) this.activeYearEnd = this.activeYearStart + 1
     },
-    configs: function (newConfig) {
-      if (
-                newConfig &&
-                newConfig.dateRange &&
-                newConfig.dateRange.start &&
-                newConfig.dateRange.start instanceof Date &&
-                newConfig.dateRange.end &&
-                newConfig.dateRange.end instanceof Date
-            ) {
-        const startDate = this.configs.dateRange.start
-        startDate.setDate(startDate.getDate() + 1)
-
-        const endDate = this.configs.dateRange.end
-        endDate.setDate(endDate.getDate() + 1)
-
-        this.dateRange = {
-          start: startDate,
-          end: endDate
-        }
-      } else {
-        console.log('Invalid date range config')
-      }
-    }
+    configs: 'updateDateRangeFromConfig'
   },
   computed: {
     monthsLocale: function () {
@@ -270,6 +256,38 @@ export default {
     }
   },
   methods: {
+    updateDateRangeFromConfig: function (config) {
+      if (!this.isDateRangeConfigValid(config)) {
+        return
+      }
+      var startDate = this.configs.dateRange.start
+      startDate.setDate(startDate.getDate() + 1)
+
+      var endDate = this.configs.dateRange.end
+      endDate.setDate(endDate.getDate() + 1)
+
+      this.dateRange = {
+        start: startDate,
+        end: endDate
+      }
+    },
+    isDateRangeConfigValid: function (config) {
+      console.log('test')
+      console.log(config)
+      if (
+          typeof config !== 'object' ||
+          !config ||
+          !config.hasOwnProperty('dateRange') ||
+          !config.dateRange.hasOwnProperty('start') ||
+          !config.dateRange.hasOwnProperty('end')
+      ) {
+        return false
+      }
+
+      var isStartDateValid = (config.dateRange.start && config.dateRange.start instanceof Date)
+      var isEndDateValid = (config.dateRange.end && config.dateRange.end instanceof Date)
+      return isStartDateValid && isEndDateValid
+    },
     toggleCalendar: function () {
       if (this.isCompact) {
         this.showMonth = !this.showMonth
